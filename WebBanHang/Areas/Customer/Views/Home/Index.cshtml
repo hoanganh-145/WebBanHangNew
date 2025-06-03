@@ -1,0 +1,34 @@
+﻿@{ ViewData["Title"] = "Home Page"; }
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Cửa Hàng Điện Máy</h1>
+    <p>Tìm hiểu về <a href="https://docs.microsoft.com/aspnet/core">xây dựng ứng dụng web với ASP.NET Core</a>.</p>
+</div>
+
+<div id="products" class="row">
+    <partial name="_ProductPartial" />
+</div>
+
+<div class="text-center">
+    <button id="btnLoadMore" class="btn btn-primary">Load More</button>
+</div>
+
+@section Scripts
+{
+    <script>
+        let CurrentPage = 2;
+        $("#btnLoadMore").click(function () {
+            $.ajax({
+                url: "Customer/Home/LoadMore",
+                data: { page: CurrentPage },
+                success: function (data) {
+                    if ($.trim(data) === '')
+                        $("#btnLoadMore").hide();
+                    else
+                        $("#products").append(data);
+                }
+            });
+            CurrentPage++;
+        });
+    </script>
+}
