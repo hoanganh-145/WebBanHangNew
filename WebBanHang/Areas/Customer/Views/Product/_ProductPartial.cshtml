@@ -1,0 +1,21 @@
+﻿<h3 class="text-uppercase">PRODUCT LIST OF @ViewBag.CATEGORY_NAME</h3>
+<div class="row">
+    @foreach (var p in Model)
+    {
+        <div class="card mb-3 col-md-4">
+            <h3 class="card-header">@p.Name</h3>
+            <div class="card-body">
+                <h5 class="card-title">Price: @Html.FormatValue(p.Price, "{0:#,##} USD")</h5>
+            </div>
+            @if (!string.IsNullOrEmpty(p.ImageUrl))
+            {
+                <img src="/@p.ImageUrl" class="img-fluid" />
+            }
+            <div class="card-footer text-muted">
+                <a href="#" class="card-link btn btn-outline-dark">Detail</a>
+                <a asp-controller="Cart" asp-action="AddToCart" asp-route-masp="@p.Id" data-productid="@p.Id"
+                   class="addtocart card-link btn btn-outline-info">Add To Cart</a>
+            </div>
+        </div>
+    }
+</div>

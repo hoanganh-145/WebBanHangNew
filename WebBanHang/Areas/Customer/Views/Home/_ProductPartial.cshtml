@@ -25,7 +25,7 @@
             </div>
             <div class="card-body">
                 <a href="#" class="card-link btn btn-outline-primary btn-sm">Detail</a>
-                <a href="#" class="card-link btn btn-outline-secondary btn-sm">Add to cart</a>
+                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@p.Id" data-productId="@p.Id" class=" addtocard card-link btn btn-outline-primary btn-sm">Add to cart</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,214 @@
+﻿@model Cart
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card shopping-cart" style="border-radius: 15px;">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-lg-6 px-5 py-4">
+
+                                <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Your products</h3>
+
+                                @foreach (var item in Model.Items)
+                                {
+                                    <form asp-action="Update" method="post">
+                                        <input type="hidden" name="productId" value="@item.Product.Id" />
+                                        <div class="d-flex align-items-center mb-5">
+                                            <div class="flex-shrink-0">
+                                                <img src="/@item.Product.ImageUrl" class="img-fluid" style="width: 150px;" alt="@item.Product.Name">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <a asp-action="Remove" asp-controller="Cart" asp-route-productId="@item.Product.Id" class="float-end text-danger">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                                <h5 class="text-primary">@item.Product.Name</h5>
+                                                <h6 style="color: #9e9e9e;">@item.Product.Description</h6>
+                                                <div class="d-flex align-items-center">
+                                                    <p class="fw-bold mb-0 me-5 pe-3">@string.Format("${0:#,##0}", item.Product.Price)</p>
+                                                    <div class="def-number-input number-input safari_only">
+                                                        <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown(); updateTotal();" class="minus">-</button>
+                                                        <input class="quantity fw-bold bg-body-tertiary text-body" min="1" name="qty" value="@item.Quantity" type="number" onchange="updateTotal();">
+                                                        <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp(); updateTotal();" class="plus">+</button>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-sm btn-outline-primary ms-2">Update</button>
+                                                    <a asp-action="Remove" asp-controller="Cart" asp-route-productId="@item.Product.Id"
+                                                       class="btn btn-sm btn-outline-danger ms-2"
+                                                       onclick="return confirm('Are you sure you want to remove this item?')">
+                                                        <i class="fas fa-trash me-1"></i>Remove
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                }
+
+                                @if (!Model.Items.Any())
+                                {
+                                    <div class="text-center py-5">
+                                        <h5 class="text-muted">Your cart is empty</h5>
+                                        <a href="/customer/home/index" class="btn btn-primary mt-3">Continue Shopping</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <hr class="mb-4" style="height: 2px; background-color: #1266f1; opacity: 1;">
+
+                                    <div class="d-flex justify-content-between px-x">
+                                        <p class="fw-bold">Discount:</p>
+                                        <p class="fw-bold">$0</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between px-x">
+                                        <p class="fw-bold">Tax:</p>
+                                        <p class="fw-bold">$0.00</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between p-2 mb-2 bg-primary">
+                                        <h5 class="fw-bold mb-0 text-white">Total:</h5>
+                                        <h5 class="fw-bold mb-0 text-white">@string.Format("${0:#,##0}", Model.Total)</h5>
+                                    </div>
+                                }
+
+                            </div>
+
+                            @if (Model.Items.Any())
+                            {
+                                <div class="col-lg-6 px-5 py-4">
+
+                                    <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
+
+                                    <form class="mb-5" asp-action="Checkout" method="post">
+
+                                        <div class="form-outline mb-5">
+                                            <input type="text" id="cardNumber" name="CardNumber" class="form-control form-control-lg"
+                                                   placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" required />
+                                            <label class="form-label" for="cardNumber">Card Number</label>
+                                        </div>
+
+                                        <div class="form-outline mb-5">
+                                            <input type="text" id="cardName" name="CardName" class="form-control form-control-lg"
+                                                   placeholder="John Smith" required />
+                                            <label class="form-label" for="cardName">Name on card</label>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-5">
+                                                <div class="form-outline">
+                                                    <input type="text" id="expiration" name="Expiration" class="form-control form-control-lg"
+                                                           placeholder="MM/YY" minlength="5" maxlength="5" required />
+                                                    <label class="form-label" for="expiration">Expiration</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-5">
+                                                <div class="form-outline">
+                                                    <input type="password" id="cvv" name="CVV" class="form-control form-control-lg"
+                                                           placeholder="123" minlength="3" maxlength="4" required />
+                                                    <label class="form-label" for="cvv">CVV</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="terms" required>
+                                            <label class="form-check-label" for="terms">
+                                                I agree to the <a href="#!" class="text-primary">Terms and Conditions</a>
+                                            </label>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-block btn-lg w-100">
+                                            Buy now - @string.Format("${0:#,##0}", Model.Total)
+                                        </button>
+
+                                        <div class="mt-4 text-center">
+                                            <a href="/customer/home/index" class="text-primary">
+                                                <i class="fas fa-angle-left me-2"></i>Back to shopping
+                                            </a>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .def-number-input.number-input {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .def-number-input button {
+        width: 35px;
+        height: 35px;
+        border: 1px solid #ddd;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+        .def-number-input button:hover {
+            background: #e9ecef;
+        }
+
+    .def-number-input .minus {
+        border-radius: 4px 0 0 4px;
+    }
+
+    .def-number-input .plus {
+        border-radius: 0 4px 4px 0;
+    }
+
+    .def-number-input input[type=number] {
+        width: 60px;
+        height: 35px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-left: none;
+        border-right: none;
+        outline: none;
+    }
+
+        .def-number-input input[type=number]::-webkit-outer-spin-button,
+        .def-number-input input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    .shopping-cart {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+
+<script>
+    function updateTotal() {
+        // Có thể thêm JavaScript để tính toán tổng tiền real-time
+        // Tuy nhiên, việc tính toán chính xác nên được thực hiện ở server-side
+    }
+
+    // Format card number input
+    document.getElementById('cardNumber')?.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+        let formattedValue = value.match(/\d{1,4}/g)?.join(' ') || '';
+        if (formattedValue.length > 19) formattedValue = formattedValue.substr(0, 19);
+        e.target.value = formattedValue;
+    });
+
+    // Format expiration input
+    document.getElementById('expiration')?.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value;
+    });
+</script>
