@@ -2,7 +2,7 @@
 
 namespace WebBanHang.Migrations
 {
-    public partial class TaoLuocDoCSDL : Migration
+    public partial class KhoiTao : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

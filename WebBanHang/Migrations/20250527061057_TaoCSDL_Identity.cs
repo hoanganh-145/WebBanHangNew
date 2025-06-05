@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebBanHang.Migrations
 {
-    public partial class AddIdentityTable : Migration
+    public partial class TaoCSDL_Identity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

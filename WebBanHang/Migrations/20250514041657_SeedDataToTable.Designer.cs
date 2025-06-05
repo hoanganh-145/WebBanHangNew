@@ -9,7 +9,7 @@ using WebBanHang.Models;
 namespace WebBanHang.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250514035208_SeedDataToTable")]
+    [Migration("20250514041657_SeedDataToTable")]
     partial class SeedDataToTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

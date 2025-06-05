@@ -9,8 +9,8 @@ using WebBanHang.Models;
 namespace WebBanHang.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250514021858_TaoLuocDoCSDL")]
-    partial class TaoLuocDoCSDL
+    [Migration("20250514034159_KhoiTao")]
+    partial class KhoiTao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -6,9 +6,9 @@ namespace WebBanHang.Migrations
     public partial class ThemCotIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        {            
             migrationBuilder.AddColumn<DateTime>(
-                name: "Birthday",
+                name: "BirthDay",
                 table: "AspNetUsers",
                 type: "datetime2",
                 nullable: false,
@@ -18,29 +18,19 @@ namespace WebBanHang.Migrations
                 name: "FullName",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "Sex",
-                table: "AspNetUsers",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+                nullable: true);                        
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Birthday",
+                name: "BirthDay",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
                 name: "FullName",
                 table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Sex",
-                table: "AspNetUsers");
+            
         }
     }
 }
